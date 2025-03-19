@@ -70,6 +70,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\4923c6d767f84055868c456a8f4c267b_obj\License.txt" />
+    <None Include="Assets\Fps Arms Pack [Updated] FBX\---Read---.txt" />
+    <None Include="Assets\lantern\lantern_description.txt" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
