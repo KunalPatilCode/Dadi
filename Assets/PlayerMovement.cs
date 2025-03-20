@@ -12,6 +12,27 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
+        // Find all GameObjects in the scene.
+        GameObject[] allObjects = FindObjectsOfType<GameObject>();
+
+        // Iterate through each GameObject.
+        foreach (GameObject obj in allObjects)
+        {
+            // Check if the GameObject's name contains "ring" (case-insensitive).
+            if (obj.name.ToLower().Contains("ring"))
+            {
+                GameObject defaultChild = FindDeepChild(obj, "default");
+
+                if (defaultChild != null)
+                {
+                    MeshRenderer renderer = defaultChild.GetComponent<MeshRenderer>();
+                    if (renderer != null)
+                    {
+                        renderer.enabled = false;
+                    }
+                }
+            }
+        }
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         Cursor.lockState = CursorLockMode.Locked; // Lock the cursor to the center of the screen
@@ -33,7 +54,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 moveDirection = (forward * verticalInput + right * horizontalInput).normalized;
 
         Vector3 moveVelocity = moveDirection * moveSpeed;
-        rb.velocity = new Vector3(moveVelocity.x, rb.velocity.y, moveVelocity.z);
+        rb.linearVelocity = new Vector3(moveVelocity.x, rb.linearVelocity.y, moveVelocity.z);
 
         if (moveDirection != Vector3.zero)
         {
@@ -55,5 +76,24 @@ public class PlayerMovement : MonoBehaviour
         Quaternion targetUpRotation = Quaternion.FromToRotation(transform.up, Vector3.up) * transform.rotation;
         rb.rotation = Quaternion.RotateTowards(rb.rotation, targetUpRotation, rotationSpeed * Time.deltaTime * 3);
 
+    }
+
+    GameObject FindDeepChild(GameObject parent, string childName)
+    {
+        foreach (Transform childTransform in parent.transform)
+        {
+            GameObject child = childTransform.gameObject;
+            if (child.name.ToLower() == childName.ToLower())
+            {
+                return child;
+            }
+
+            GameObject found = FindDeepChild(child, childName);
+            if (found != null)
+            {
+                return found;
+            }
+        }
+        return null;
     }
 }
