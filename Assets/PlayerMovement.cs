@@ -7,8 +7,15 @@ public class PlayerMovement : MonoBehaviour
     public Rigidbody rb;
     public Transform playerCamera;
     public float mouseSensitivity = 100f; // Mouse sensitivity
+    public float headBobFrequency = 2f; // Adjust to control bobbing speed
+    public float headBobAmplitude = 0.25f; // Adjust to control bobbing height
+    public float idleBobFactor = 0.5f;
+    public GameObject arms;
 
-    float xRotation = 0f;
+    private float xRotation = 0f;
+    private float headBobTime;
+    private Vector3 originalCameraPosition;
+    private Vector3 originalArmsPosition;
 
     void Start()
     {
@@ -36,6 +43,8 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         Cursor.lockState = CursorLockMode.Locked; // Lock the cursor to the center of the screen
+        originalCameraPosition = playerCamera.transform.localPosition;
+        originalArmsPosition = arms.transform.localPosition;
     }
 
     void Update()
@@ -60,6 +69,20 @@ public class PlayerMovement : MonoBehaviour
         {
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
             rb.rotation = Quaternion.RotateTowards(rb.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        }
+        
+        // Head Bobbing
+        if (true)//isGrounded)
+        {
+            headBobTime += Time.deltaTime * headBobFrequency * (moveDirection.magnitude == 0? idleBobFactor : 1f);
+            float verticalOffset = Mathf.Sin(headBobTime) * headBobAmplitude * (moveDirection.magnitude == 0? idleBobFactor : 1f);
+            float armsOffset = Mathf.Sin(headBobTime-3.14f/6f) * headBobAmplitude/3f * (moveDirection.magnitude == 0? idleBobFactor : 1f);
+            playerCamera.transform.localPosition = originalCameraPosition + Vector3.up * verticalOffset;
+            arms.transform.localPosition = originalArmsPosition + Vector3.up * armsOffset;
+        }
+        else
+        {
+            //playerCamera.transform.localPosition = originalCameraPosition; // Reset position when not moving
         }
 
         // Mouse Look
