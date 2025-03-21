@@ -19,6 +19,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
+        gameObject.GetComponent<MeshRenderer>().enabled = false;
+
         // Find all GameObjects in the scene.
         GameObject[] allObjects = FindObjectsOfType<GameObject>();
 
@@ -36,6 +38,20 @@ public class PlayerMovement : MonoBehaviour
                     if (renderer != null)
                     {
                         renderer.enabled = false;
+                    }
+                }
+            }
+
+            if (obj.name.ToLower().Contains("tunnel") 
+                || obj.name.ToLower().Contains("turn") 
+                || obj.name.ToLower().Contains("ramp"))
+            {
+                if (obj != null)
+                {
+                    MeshRenderer renderer = obj.GetComponent<MeshRenderer>();
+                    if (renderer != null)
+                    {
+                        renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
                     }
                 }
             }
