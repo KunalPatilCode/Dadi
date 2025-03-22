@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     public float headBobAmplitude = 0.25f; // Adjust to control bobbing height
     public float idleBobFactor = 0.5f;
     public GameObject arms;
+    public GameObject tempLight;
 
     private float xRotation = 0f;
     private float headBobTime;
@@ -20,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         gameObject.GetComponent<MeshRenderer>().enabled = false;
+        tempLight.SetActive(false);
 
         // Find all GameObjects in the scene.
         GameObject[] allObjects = FindObjectsOfType<GameObject>();

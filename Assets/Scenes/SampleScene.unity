@@ -3728,7 +3728,7 @@ GameObject:
   - component: {fileID: 1772352397}
   - component: {fileID: 1772352396}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: TempLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3779,7 +3779,7 @@ Light:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1772352393}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 11
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -4379,6 +4379,7 @@ MonoBehaviour:
   headBobAmplitude: 0.125
   idleBobFactor: 0.33
   arms: {fileID: 1099138118}
+  tempLight: {fileID: 1772352393}
 --- !u!54 &1985455952
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4434,7 +4435,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1985455945}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a2b60d730091c0d4a81e732a459346ea, type: 3}
   m_Name: 
