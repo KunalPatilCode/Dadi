@@ -4,66 +4,51 @@ using UnityEngine;
 
 public class FootstepScript : MonoBehaviour
 {
-    public GameObject footstep;
+    public GameObject Player; // Assign the Player GameObject
 
-    // Start is called before the first frame update
     void Start()
     {
-        footstep.SetActive(false);
+        if (Player == null)
+        {
+            Debug.LogError("Player GameObject is not assigned!");
+        }
+        else
+        {
+            Debug.Log("Player GameObject is assigned correctly.");
+            Player.SetActive(false);
+        }
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey("w"))
-        {
-            footsteps();
-        }
+        float moveX = Input.GetAxis("Horizontal");
+        float moveY = Input.GetAxis("Vertical");
 
-        if(Input.GetKeyDown("s"))
+        if (moveX != 0 || moveY != 0)
         {
-            footsteps();
+            ActivatePlayer();
         }
-
-        if(Input.GetKeyDown("a"))
+        else
         {
-            footsteps();
+            DeactivatePlayer();
         }
-
-        if(Input.GetKeyDown("d"))
-        {
-            footsteps();
-        }
-
-        if(Input.GetKeyUp("w"))
-        {
-            StopFootsteps();
-        }
-
-        if(Input.GetKeyUp("s"))
-        {
-            StopFootsteps();
-        }
-
-        if(Input.GetKeyUp("a"))
-        {
-            StopFootsteps();
-        }
-
-        if(Input.GetKeyUp("d"))
-        {
-            StopFootsteps();
-        }
-
     }
 
-    void footsteps()
+    void ActivatePlayer()
     {
-        footstep.SetActive(true);
+        if (!Player.activeSelf) // Avoid redundant activations
+        {
+            Player.SetActive(true);
+            Debug.Log("Player activated");
+        }
     }
 
-    void StopFootsteps()
+    void DeactivatePlayer()
     {
-        footstep.SetActive(false);
+        if (Player.activeSelf) // Avoid redundant deactivations
+        {
+            Player.SetActive(false);
+            Debug.Log("Player deactivated");
+        }
     }
 }
