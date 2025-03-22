@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class FootstepScript : MonoBehaviour
 {
-    public GameObject Player; // Assign the Player GameObject
+    public GameObject Footstep; // Assign the Footstep GameObject
 
     void Start()
     {
-        if (Player == null)
+        if (Footstep == null)
         {
-            Debug.LogError("Player GameObject is not assigned!");
+            Debug.LogError("Footstep GameObject is not assigned!");
         }
         else
         {
-            Debug.Log("Player GameObject is assigned correctly.");
-            Player.SetActive(false);
+            Debug.Log("Footstep GameObject is assigned correctly.");
+            Footstep.SetActive(false);
         }
     }
 
@@ -26,29 +26,29 @@ public class FootstepScript : MonoBehaviour
 
         if (moveX != 0 || moveY != 0)
         {
-            ActivatePlayer();
+            ActivateFootstep();
         }
         else
         {
-            DeactivatePlayer();
+            DeactivateFootstep();
         }
     }
 
-    void ActivatePlayer()
+    void ActivateFootstep()
     {
-        if (!Player.activeSelf) // Avoid redundant activations
+        if (!Footstep.activeSelf) // Avoid redundant activations
         {
-            Player.SetActive(true);
-            Debug.Log("Player activated");
+            Footstep.SetActive(true);
+            Debug.Log("Footstep activated");
         }
     }
 
-    void DeactivatePlayer()
+    void DeactivateFootstep()
     {
-        if (Player.activeSelf) // Avoid redundant deactivations
+        if (Footstep.activeSelf) // Avoid redundant deactivations
         {
-            Player.SetActive(false);
-            Debug.Log("Player deactivated");
+            Footstep.SetActive(false);
+            Debug.Log("Footstep deactivated");
         }
     }
 }
