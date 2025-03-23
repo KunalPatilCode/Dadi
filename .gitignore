@@ -1,4 +1,5 @@
 /Library/*
+/UserSettings/*
 /Logs/*
 /Temp/*
 /executable_Data/*
@@ -8,4 +9,3 @@
 /UnityPlayer.so
 /UnityPlayer_s.debug
 /run/*
-/UserSettings/*
