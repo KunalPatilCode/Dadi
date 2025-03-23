@@ -4485,12 +4485,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Footstep: {fileID: 787833627}
-  rb: {fileID: 0}
-  footstepAudio: {fileID: 0}
   minSpeed: 0
   maxSpeed: 5
   minPitch: 0.1
-  maxPitch: 2.15
+  maxPitch: 1.75
 --- !u!1001 &2009093943
 PrefabInstance:
   m_ObjectHideFlags: 0
