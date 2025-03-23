@@ -5,18 +5,27 @@ using UnityEngine;
 public class FootstepScript : MonoBehaviour
 {
     public GameObject Footstep; // Assign the Footstep GameObject
+    public float minSpeed = 0f;
+    public float maxSpeed = 5f;
+    public float minPitch = 0.8f;
+    public float maxPitch = 1.5f;
+
+    private Vector3 lastPosition;
+    private Vector3 actualVelocity = Vector3.zero;
+    private Rigidbody rb;
+    private AudioSource footstepAudio;
+    private PlayerMovement playerMovement;
+    private float headBobFrequency;
+
 
     void Start()
     {
-        if (Footstep == null)
-        {
-            Debug.LogError("Footstep GameObject is not assigned!");
-        }
-        else
-        {
-            Debug.Log("Footstep GameObject is assigned correctly.");
-            Footstep.SetActive(false);
-        }
+        rb = GetComponent<Rigidbody>();
+        footstepAudio = Footstep.GetComponent<AudioSource>();
+        playerMovement = GetComponent<PlayerMovement>();
+
+        lastPosition = transform.position;
+        headBobFrequency = playerMovement.headBobFrequency;
     }
 
     void Update()
@@ -27,11 +36,30 @@ public class FootstepScript : MonoBehaviour
         if (moveX != 0 || moveY != 0)
         {
             ActivateFootstep();
+            float speed = actualVelocity.magnitude;
+            Debug.Log(speed);
+            float speedFactor = (speed/maxSpeed);
+            playerMovement.headBobFrequency = headBobFrequency*speedFactor;
+            float pitch = maxPitch*speedFactor;
+            footstepAudio.pitch = pitch;
         }
         else
         {
             DeactivateFootstep();
+            playerMovement.headBobFrequency = headBobFrequency;
         }
+    }
+
+    void FixedUpdate() // Use FixedUpdate for physics calculations
+    {
+        // Calculate the change in position
+        Vector3 positionChange = transform.position - lastPosition;
+
+        // Calculate the velocity
+        actualVelocity = positionChange / Time.fixedDeltaTime;
+
+        // Update the last position
+        lastPosition = transform.position;
     }
 
     void ActivateFootstep()
@@ -39,7 +67,6 @@ public class FootstepScript : MonoBehaviour
         if (!Footstep.activeSelf) // Avoid redundant activations
         {
             Footstep.SetActive(true);
-            Debug.Log("Footstep activated");
         }
     }
 
@@ -48,7 +75,6 @@ public class FootstepScript : MonoBehaviour
         if (Footstep.activeSelf) // Avoid redundant deactivations
         {
             Footstep.SetActive(false);
-            Debug.Log("Footstep deactivated");
         }
     }
 }

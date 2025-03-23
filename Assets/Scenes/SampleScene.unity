@@ -1442,12 +1442,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 787833627}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.11273681, z: -0, w: 0.99362487}
-  m_LocalPosition: {x: 0.18161921, y: -0.62300014, z: -0.09818542}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.069999695, y: 0.07499981, z: 0.10999966}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1752944014}
+  m_Father: {fileID: 1985455946}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &787833629
 AudioSource:
@@ -1459,8 +1459,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: f4c4e1c370cefc946ac6ae207971a623, type: 3}
-  m_Resource: {fileID: 8300000, guid: f4c4e1c370cefc946ac6ae207971a623, type: 3}
+  m_audioClip: {fileID: 8300000, guid: ea624ea1c0c855817873598d9f32ce82, type: 3}
+  m_Resource: {fileID: 8300000, guid: ea624ea1c0c855817873598d9f32ce82, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -3576,7 +3576,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 787833628}
   - {fileID: 1099138117}
   - {fileID: 1375808318}
   m_Father: {fileID: 1985455946}
@@ -4323,6 +4322,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 787833628}
   - {fileID: 1752944014}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4485,6 +4485,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Footstep: {fileID: 787833627}
+  rb: {fileID: 0}
+  footstepAudio: {fileID: 0}
+  minSpeed: 0
+  maxSpeed: 5
+  minPitch: 0.1
+  maxPitch: 2.15
 --- !u!1001 &2009093943
 PrefabInstance:
   m_ObjectHideFlags: 0
