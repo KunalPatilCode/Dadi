@@ -12,11 +12,16 @@ public class PlayerMovement : MonoBehaviour
     public float idleBobFactor = 0.5f;
     public GameObject arms;
     public GameObject tempLight;
+    public Light lanternLight;
+    public GameObject houseLightBounds;
+    public float maxEmissionIntensity = 5f;
+    public float minEmissionIntensity = 1f;
 
     private float xRotation = 0f;
     private float headBobTime;
     private Vector3 originalCameraPosition;
     private Vector3 originalArmsPosition;
+    private Collider cubeCollider;
 
     void Start()
     {
@@ -63,6 +68,8 @@ public class PlayerMovement : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked; // Lock the cursor to the center of the screen
         originalCameraPosition = playerCamera.transform.localPosition;
         originalArmsPosition = arms.transform.localPosition;
+
+        cubeCollider = houseLightBounds.GetComponent<Collider>();
     }
 
     void Update()
@@ -117,6 +124,26 @@ public class PlayerMovement : MonoBehaviour
         Quaternion targetUpRotation = Quaternion.FromToRotation(transform.up, Vector3.up) * transform.rotation;
         rb.rotation = Quaternion.RotateTowards(rb.rotation, targetUpRotation, rotationSpeed * Time.deltaTime * 3);
 
+        if (IsPlayerInCube())
+        {
+            lanternLight.intensity = maxEmissionIntensity;
+        }
+        else
+        {
+            lanternLight.intensity = minEmissionIntensity;
+        }
+    }
+
+    bool IsPlayerInCube()
+    {
+        if (cubeCollider.bounds.Contains(transform.position))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     GameObject FindDeepChild(GameObject parent, string childName)
