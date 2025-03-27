@@ -26,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         gameObject.GetComponent<MeshRenderer>().enabled = false;
-        tempLight.SetActive(false);
+        //tempLight.SetActive(false);
 
         // Find all GameObjects in the scene.
         GameObject[] allObjects = FindObjectsOfType<GameObject>();
@@ -68,8 +68,6 @@ public class PlayerMovement : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked; // Lock the cursor to the center of the screen
         originalCameraPosition = playerCamera.transform.localPosition;
         originalArmsPosition = arms.transform.localPosition;
-
-        cubeCollider = houseLightBounds.GetComponent<Collider>();
     }
 
     void Update()
@@ -136,6 +134,9 @@ public class PlayerMovement : MonoBehaviour
 
     bool IsPlayerInCube()
     {
+        if(cubeCollider == null)
+            cubeCollider = houseLightBounds.GetComponent<Collider>();
+
         if (cubeCollider.bounds.Contains(transform.position))
         {
             return true;
