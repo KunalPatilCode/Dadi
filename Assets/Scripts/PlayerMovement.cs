@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
     public GameObject houseLightBounds;
     public float maxEmissionIntensity = 5f;
     public float minEmissionIntensity = 1f;
+    public float maxEmissionDistance = 10f;
 
     private float xRotation = 0f;
     private float headBobTime;
@@ -26,7 +27,9 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         gameObject.GetComponent<MeshRenderer>().enabled = false;
-        //tempLight.SetActive(false);
+        tempLight.SetActive(false);
+
+        cubeCollider = houseLightBounds.GetComponent<Collider>();
 
         // Find all GameObjects in the scene.
         GameObject[] allObjects = FindObjectsOfType<GameObject>();
@@ -112,30 +115,45 @@ public class PlayerMovement : MonoBehaviour
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
-        xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f); // Limit vertical rotation
+        if(!Input.GetKey(KeyCode.Escape))
+        {
+            xRotation -= mouseY;
+            xRotation = Mathf.Clamp(xRotation, -90f, 90f); // Limit vertical rotation
 
-        playerCamera.localRotation = Quaternion.Euler(xRotation, 0f, 0f); // Apply vertical rotation to camera
-        transform.Rotate(Vector3.up * mouseX); // Apply horizontal rotation to player
+            playerCamera.localRotation = Quaternion.Euler(xRotation, 0f, 0f); // Apply vertical rotation to camera
+            transform.Rotate(Vector3.up * mouseX); // Apply horizontal rotation to player
+        }
 
         // Align with opposite of gravity (upwards)
         Quaternion targetUpRotation = Quaternion.FromToRotation(transform.up, Vector3.up) * transform.rotation;
         rb.rotation = Quaternion.RotateTowards(rb.rotation, targetUpRotation, rotationSpeed * Time.deltaTime * 3);
 
+        Vector3 closestPoint = cubeCollider.ClosestPoint(transform.position);
+        float distance = Vector3.Distance(transform.position, closestPoint);
+        Debug.Log(distance);
         if (IsPlayerInCube())
         {
             lanternLight.intensity = maxEmissionIntensity;
         }
         else
         {
-            lanternLight.intensity = minEmissionIntensity;
+            if (distance <= maxEmissionDistance)
+            {
+                // Calculate the interpolation factor based on distance.
+                float t = 1f - Mathf.Clamp01(distance / maxEmissionDistance);
+
+                // Interpolate between max and min intensity.
+                lanternLight.intensity = Mathf.Lerp(minEmissionIntensity, maxEmissionIntensity, t);
+            }
+            else
+            {
+                lanternLight.intensity = minEmissionIntensity;
+            }
         }
     }
 
     bool IsPlayerInCube()
     {
-        if(cubeCollider == null)
-            cubeCollider = houseLightBounds.GetComponent<Collider>();
 
         if (cubeCollider.bounds.Contains(transform.position))
         {

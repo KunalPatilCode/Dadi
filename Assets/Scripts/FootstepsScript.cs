@@ -37,7 +37,7 @@ public class FootstepScript : MonoBehaviour
         {
             ActivateFootstep();
             float speed = actualVelocity.magnitude;
-            Debug.Log(speed);
+            //Debug.Log(speed);
             float speedFactor = (speed/maxSpeed);
             playerMovement.headBobFrequency = headBobFrequency*speedFactor;
             float pitch = maxPitch*speedFactor;
