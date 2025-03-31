@@ -12,45 +12,43 @@ public class KeyPickUp : MonoBehaviour
     private bool inReach;
 
 
-void Start()
-{
-    inReach = (false);
-
-    pickUpText.SetActive(false);
-
-    invOB.SetActive(false);
-
-}
-
-void OnTriggerEnter(Collider other)
-{
-    if (other.gameObject.tag == "Reach")
+    void Start()
     {
-        inReach = true;
-        pickUpText.SetActive(true);
-    }
+        inReach = (false);
 
-}
-
-void OnTriggerExit(Collider other)
-{
-    if (other.gameObject.tag == "Reach")
-    {
-        inReach = false;
         pickUpText.SetActive(false);
+
+        invOB.SetActive(false);
+
     }
-}
 
-void Update()
-{
-
-
-    if (inReach && Input.GetButtonDown("Interact"))
+    void OnTriggerEnter(Collider other)
     {
-        keyOB.SetActive(false);
-        keySound.Play();
-        invOB.SetActive(true);
-        pickUpText.SetActive(false);
+        if (other.gameObject.tag == "Player")
+        {
+            inReach = true;
+            pickUpText.SetActive(true);
+        }
+
     }
-}
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            inReach = false;
+            pickUpText.SetActive(false);
+        }
+    }
+
+    void Update()
+    {
+        if (inReach && Input.GetKeyUp(KeyCode.E))
+        {
+            keyOB.SetActive(false);
+            keySound.Play();
+            invOB.SetActive(true);
+            pickUpText.SetActive(false);
+        }
+    }
 }
