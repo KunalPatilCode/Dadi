@@ -66,8 +66,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\KeyPickUp.cs" />
+    <Compile Include="Assets\Scripts\door.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Scripts\PlayerMovement.cs" />
+    <Compile Include="Assets\Scripts\OpenBoxScript.cs" />
     <Compile Include="Assets\Scripts\FootstepsScript.cs" />
     <Compile Include="Assets\Scripts\CameraController.cs" />
   </ItemGroup>
