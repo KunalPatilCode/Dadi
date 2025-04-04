@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,68 +6,74 @@ public class LightSwitch : MonoBehaviour
 {
     public GameObject onOB;
     public GameObject offOB;
+
     public GameObject lightsText;
+
+
     public GameObject lightOB;
+
+
     public AudioSource switchClick;
-    
-    private bool lightsAreOn = false;
-    private bool inReach = false;
+
+    public bool lightsAreOn;
+    public bool lightsAreOff;
+    public bool inReach;
+
 
     void Start()
     {
-        UpdateLightState();
-        if (lightsText != null)
-        {
-            lightsText.SetActive(false);
-        }
+        inReach = false;
+        lightsAreOn = false;
+        lightsAreOff = true;
+        onOB.SetActive(false);
+        offOB.SetActive(true);
+        lightOB.SetActive(false);
     }
+
+
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Reach"))
+        if (other.gameObject.tag == "Reach")
         {
             inReach = true;
-            if (lightsText != null)
-            {
-                lightsText.SetActive(true); 
-            }
+            lightsText.SetActive(true);
         }
     }
 
     void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Reach"))
+        if (other.gameObject.tag == "Reach")
         {
             inReach = false;
-            if (lightsText != null)
-            {
-                lightsText.SetActive(false); 
-            }
+            lightsText.SetActive(false);
         }
     }
+
+
 
     void Update()
     {
-        if (inReach && Input.GetButtonDown("Interact"))
+        if(lightsAreOn && inReach && Input.GetButtonDown("Interact"))
         {
-            ToggleLights();
-        }
-    }
-
-    void ToggleLights()
-    {
-        lightsAreOn = !lightsAreOn;
-        UpdateLightState();
-        if (switchClick != null)
-        {
+            lightOB.SetActive(false);
+            onOB.SetActive(false);
+            offOB.SetActive(true);
             switchClick.Play();
+            lightsAreOff = true;
+            lightsAreOn = false;
         }
-    }
 
-    void UpdateLightState()
-    {
-        if (lightOB != null) lightOB.SetActive(lightsAreOn);
-        if (onOB != null) onOB.SetActive(lightsAreOn);
-        if (offOB != null) offOB.SetActive(!lightsAreOn);
+        else if (lightsAreOff && inReach && Input.GetButtonDown("Interact"))
+        {
+            lightOB.SetActive(true);
+            onOB.SetActive(true);
+            offOB.SetActive(false);
+            switchClick.Play();
+            lightsAreOff = false;
+            lightsAreOn = true;
+        }
+
+
     }
 }
