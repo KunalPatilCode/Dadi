@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - Reach
+  - LightInteractable
   layers:
   - Default
   - TransparentFX
