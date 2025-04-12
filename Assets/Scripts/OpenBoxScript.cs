@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class OpenBoxRaycast : MonoBehaviour
 {
@@ -10,7 +9,8 @@ public class OpenBoxRaycast : MonoBehaviour
     public float interactionDistance = 3f;
     public Camera playerCamera;
 
-    private bool isOpen = false;
+    [HideInInspector]
+    public bool isBoxOpen = false;
 
     void Start()
     {
@@ -19,7 +19,7 @@ public class OpenBoxRaycast : MonoBehaviour
 
     void Update()
     {
-        if (isOpen) return;
+        if (isBoxOpen) return;
 
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
         RaycastHit hit;
@@ -34,7 +34,7 @@ public class OpenBoxRaycast : MonoBehaviour
                 {
                     openSound.Play();
                     boxOB.SetBool("open", true);
-                    isOpen = true;
+                    isBoxOpen = true;
                     openText.SetActive(false);
                     DisableSelf();
                 }
