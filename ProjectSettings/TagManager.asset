@@ -6,11 +6,12 @@ TagManager:
   tags:
   - Reach
   - LightInteractable
+  - MergeItem
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Draggable
   - Water
   - UI
   - 
