@@ -34,7 +34,6 @@ public class OpenBoxRaycast : MonoBehaviour
                 {
                     openSound.Play();
                     boxOB.SetBool("open", true);
-                    isBoxOpen = true;
                     openText.SetActive(false);
                     DisableSelf();
                 }
@@ -48,6 +47,11 @@ public class OpenBoxRaycast : MonoBehaviour
         {
             openText.SetActive(false);
         }
+    }
+
+    void setBoxOpen()
+    {
+        isBoxOpen = true;
     }
 
     void DisableSelf()

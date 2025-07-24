@@ -7,7 +7,6 @@ public class InventoryItem : MonoBehaviour, IInteractable
     public string itemName;
     public Sprite itemIcon;
     public int stackSize = 1; // How many of this item can be in one slot
-    public ThrowableObject inHandObject;
 
     private bool EUp = false;
     private bool EPressed = false;
@@ -18,19 +17,18 @@ public class InventoryItem : MonoBehaviour, IInteractable
     public bool buttonPressed => EPressed;
     public bool buttonUp => EUp;
 
-    public InventoryItem(string itemName, Sprite itemIcon, int stackSize, ThrowableObject inHandObject)
+    public InventoryItem(string itemName, Sprite itemIcon, int stackSize)
     {
         this.itemName = itemName;
         this.itemIcon = itemIcon;
         this.stackSize = stackSize;
-        this.inHandObject = inHandObject;
     }
 
     public void Interact(GameObject interactor)
     {
         // ... (pickup logic)
         //Debug.Log(interactor.GetComponent<Inventory>().IsInventoryEmpty());
-        if(interactor.GetComponent<Inventory>().AddItem(new Inventory.InventoryItem(itemName, itemIcon, stackSize, inHandObject)))
+        if(interactor.GetComponent<Inventory>().AddItem(new Inventory.InventoryItem(itemName, itemIcon, stackSize)))
         {
             Destroy(gameObject);
         }

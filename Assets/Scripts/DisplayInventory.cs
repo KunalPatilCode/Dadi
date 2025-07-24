@@ -78,15 +78,13 @@ public class DisplayInventory : MonoBehaviour
     public void Unselect()
     {
         inventorySlots[SelectedIndex].GetComponent<Image>().color = OriginalColor;
-        playerInventory.inventorySlots[SelectedIndex].item.inHandObject.gameObject.SetActive(false);
         currentItem = null;
     }
 
     public void Select()
     {
+        print(SelectedIndex);
         inventorySlots[SelectedIndex].GetComponent<Image>().color = SelectedColor;
-        playerInventory.inventorySlots[SelectedIndex].item.inHandObject.gameObject.SetActive(true);
-        currentItem = playerInventory.inventorySlots[SelectedIndex].item.inHandObject;
     }
     // void OnDisable()
     // {

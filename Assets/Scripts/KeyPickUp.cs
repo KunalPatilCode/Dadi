@@ -3,8 +3,8 @@
 public class KeyPickUpRaycast : MonoBehaviour
 {
     public GameObject keyOB;
-    public GameObject invOB;
     public GameObject pickUpText;
+    public GameObject player;
     public AudioSource keySound;
 
     public float interactionDistance = 3f;
@@ -12,17 +12,19 @@ public class KeyPickUpRaycast : MonoBehaviour
 
     public OpenBoxRaycast boxScript; // ← Reference to box script
 
+    private InventoryItem inventoryItem;
+
     private bool isPicked = false;
 
     void Start()
     {
         pickUpText.SetActive(false);
-        invOB.SetActive(false);
+        inventoryItem = GetComponent<InventoryItem>();
     }
 
     void Update()
     {
-        if (isPicked || !boxScript.isBoxOpen) return; // ← Block pickup until box is open
+        if (isPicked || (boxScript != null && !boxScript.isBoxOpen)) return; // ← Block pickup until box is open
 
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
         RaycastHit hit;
@@ -37,9 +39,9 @@ public class KeyPickUpRaycast : MonoBehaviour
                 {
                     keySound.Play();
                     keyOB.SetActive(false);
-                    invOB.SetActive(true);
                     pickUpText.SetActive(false);
                     isPicked = true;
+                    player.GetComponent<Inventory>().AddItem(new Inventory.InventoryItem(inventoryItem.itemName, inventoryItem.itemIcon, inventoryItem.stackSize));
                     DisableSelf();
                 }
             }
