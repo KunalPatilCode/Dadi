@@ -10,7 +10,11 @@ public class AnimatedPickUpRaycast : MonoBehaviour
     public float interactionDistance = 3f;
     public Camera playerCamera;
 
+    public GameObject[] rotateObjects;
+    public float[] rotateValues;
+    public int rotationTime = 5;
     public OpenBoxRaycast boxScript; // ← Reference to box script
+    public bool isAddToInventory = true;
 
     private InventoryItem inventoryItem;
 
@@ -21,6 +25,7 @@ public class AnimatedPickUpRaycast : MonoBehaviour
     {
         pickUpText.SetActive(false);
         inventoryItem = GetComponent<InventoryItem>();
+        stopRotation();
     }
 
     void Update()
@@ -40,11 +45,13 @@ public class AnimatedPickUpRaycast : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.E))
                 {
                     keySound.Play();
-                    keyOB.SetActive(false);
                     pickUpText.SetActive(false);
-                    isPicked = true;
-                    player.GetComponent<Inventory>().AddItem(new Inventory.InventoryItem(inventoryItem.itemName, inventoryItem.itemIcon, inventoryItem.stackSize));
+                    startRotation();
                     DisableSelf();
+                    Invoke("stopRotation", rotationTime);
+                    if(isAddToInventory)
+                        Invoke("addToInventory", rotationTime);
+                    Invoke("EnableSelf", rotationTime);
                 }
             }
         }
@@ -58,9 +65,38 @@ public class AnimatedPickUpRaycast : MonoBehaviour
         }
     }
 
+    void addToInventory()
+    {
+        player.GetComponent<Inventory>().AddItem(new Inventory.InventoryItem(inventoryItem.itemName, inventoryItem.itemIcon, inventoryItem.stackSize));
+    }
+
+    void stopRotation()
+    {
+        for (int i = 0; i < rotateObjects.Length; i++)
+        {
+            rotateObjects[i].GetComponent<RotateAroundCenter>().rotationSpeed = 0f;
+        }
+    }
+
+    void startRotation()
+    {
+        for (int i = 0; i < rotateObjects.Length; i++)
+        {
+            rotateObjects[i].GetComponent<RotateAroundCenter>().rotationSpeed = rotateValues[i];
+        }
+    }
+
     void DisableSelf()
     {
-        GetComponent<Collider>().enabled = false;
-        this.enabled = false;
+        keyOB.SetActive(false);
+        isPicked = true;
+        player.GetComponent<PlayerMovement>().animating = true;
+    }
+    
+    void EnableSelf()
+    {
+        keyOB.SetActive(true);
+        isPicked = false;
+        player.GetComponent<PlayerMovement>().animating = false;
     }
 }

@@ -18,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     public float minEmissionIntensity = 1f;
     public float maxEmissionDistance = 10f;
 
+    public bool animating = false;
     private float xRotation = 0f;
     private float headBobTime;
     private Vector3 originalCameraPosition;
@@ -78,6 +79,12 @@ public class PlayerMovement : MonoBehaviour
         // Movement
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
+
+        if(animating)
+        {
+            horizontalInput = 0f;
+            verticalInput = 0f;
+        }
 
         Vector3 forward = playerCamera.forward;
         Vector3 right = playerCamera.right;

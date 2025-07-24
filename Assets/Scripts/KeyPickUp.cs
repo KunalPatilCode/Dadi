@@ -23,6 +23,11 @@ public class KeyPickUpRaycast : MonoBehaviour
         inventoryItem = GetComponent<InventoryItem>();
     }
 
+    void OnEnable()
+    {
+        isPicked = false;
+    }
+
     void Update()
     {
         if (isPicked || (boxScript != null && !boxScript.isBoxOpen)) return; // ← Block pickup until box is open
@@ -44,7 +49,6 @@ public class KeyPickUpRaycast : MonoBehaviour
                     pickUpText.SetActive(false);
                     isPicked = true;
                     player.GetComponent<Inventory>().AddItem(new Inventory.InventoryItem(inventoryItem.itemName, inventoryItem.itemIcon, inventoryItem.stackSize));
-                    DisableSelf();
                 }
             }
         }
@@ -56,11 +60,5 @@ public class KeyPickUpRaycast : MonoBehaviour
                 wasHit = false;
             }
         }
-    }
-
-    void DisableSelf()
-    {
-        GetComponent<Collider>().enabled = false;
-        this.enabled = false;
     }
 }

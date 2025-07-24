@@ -32307,7 +32307,7 @@ MonoBehaviour:
   itemName: Floor
   itemIcon: {fileID: 21300000, guid: af63ce8efe851a848ab92f17cdf68f18, type: 3}
   stackSize: 1
---- !u!114 &1619889159
+--- !u!114 &1619889161
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -32326,6 +32326,19 @@ MonoBehaviour:
   interactionDistance: 2
   playerCamera: {fileID: 1752944017}
   boxScript: {fileID: 0}
+--- !u!114 &1619889162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1619889154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93119f91065eebe41964b5fbe3aa2268, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mill: {fileID: 919132147535907211}
 --- !u!1 &1621821122 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 0406fca0d884dd34fab649255bec2821, type: 3}
@@ -35214,6 +35227,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -5405418456211463118, guid: 629d14e20316e83409a5b51a0136f4e3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -4835698524530802597, guid: 629d14e20316e83409a5b51a0136f4e3, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -35224,7 +35241,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 629d14e20316e83409a5b51a0136f4e3, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -35235,10 +35252,13 @@ PrefabInstance:
       addedObject: {fileID: 1619889156}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 629d14e20316e83409a5b51a0136f4e3, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1619889159}
+      addedObject: {fileID: 1619889162}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 629d14e20316e83409a5b51a0136f4e3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1619889158}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 629d14e20316e83409a5b51a0136f4e3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1619889161}
     - targetCorrespondingSourceObject: {fileID: -5405418456211463118, guid: 629d14e20316e83409a5b51a0136f4e3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 899392013}
@@ -44003,7 +44023,7 @@ Transform:
   m_GameObject: {fileID: 1985455945}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.26321352, z: -0, w: 0.9647376}
-  m_LocalPosition: {x: 118.35, y: 7.58, z: -42.39}
+  m_LocalPosition: {x: 89.931, y: 7.58, z: -49.004}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -44114,6 +44134,7 @@ MonoBehaviour:
   maxEmissionIntensity: 25
   minEmissionIntensity: 2.5
   maxEmissionDistance: 10
+  animating: 0
 --- !u!54 &1985455952
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -47224,7 +47245,7 @@ GameObject:
   - component: {fileID: 8760365780125503240}
   - component: {fileID: 441161750428291653}
   - component: {fileID: 8760365780125503242}
-  - component: {fileID: 8760365780125503241}
+  - component: {fileID: 8760365780125503244}
   - component: {fileID: 8760365780125503243}
   m_Layer: 0
   m_Name: Well_LP.001
@@ -47521,6 +47542,7 @@ GameObject:
   m_Component:
   - component: {fileID: 543450651996541745}
   - component: {fileID: 919132147535907212}
+  - component: {fileID: 919132147535907213}
   m_Layer: 0
   m_Name: mill
   m_TagString: Untagged
@@ -47551,6 +47573,31 @@ CapsuleCollider:
   m_Height: 0.62715095
   m_Direction: 1
   m_Center: {x: 0.007909881, y: 0.2624665, z: 0}
+--- !u!114 &919132147535907213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132147535907211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a77ec20de2c601d408e72265b6db5fb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  keyOB: {fileID: 1619889154}
+  pickUpText: {fileID: 1970250825}
+  player: {fileID: 1985455945}
+  keySound: {fileID: 988746757}
+  interactionDistance: 1.5
+  playerCamera: {fileID: 1752944017}
+  rotateObjects:
+  - {fileID: 715218714}
+  rotateValues:
+  - 45
+  rotationTime: 8
+  boxScript: {fileID: 0}
+  isAddToInventory: 0
 --- !u!1 &919132147695521338
 GameObject:
   m_ObjectHideFlags: 0
@@ -50192,25 +50239,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 397307303119256704}
   m_Mesh: {fileID: -7813633908927645016, guid: 68642b962c0311545abd28cabea648f1, type: 3}
---- !u!114 &8760365780125503241
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 397307303119256704}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d237f48cf3537744ab2560d2cf7f20b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  keyOB: {fileID: 397307303119256704}
-  pickUpText: {fileID: 1970250825}
-  player: {fileID: 1985455945}
-  keySound: {fileID: 988746757}
-  interactionDistance: 1.5
-  playerCamera: {fileID: 1752944017}
-  boxScript: {fileID: 0}
 --- !u!114 &8760365780125503242
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50224,7 +50252,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: bucket
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: 21300000, guid: 30d0d9df05cdcde49ad697fab49f0d53, type: 3}
   stackSize: 1
 --- !u!64 &8760365780125503243
 MeshCollider:
@@ -50248,6 +50276,33 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -7813633908927645016, guid: 68642b962c0311545abd28cabea648f1, type: 3}
+--- !u!114 &8760365780125503244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 397307303119256704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a77ec20de2c601d408e72265b6db5fb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  keyOB: {fileID: 397307303119256704}
+  pickUpText: {fileID: 1970250825}
+  player: {fileID: 1985455945}
+  keySound: {fileID: 988746757}
+  interactionDistance: 1
+  playerCamera: {fileID: 1752944017}
+  rotateObjects:
+  - {fileID: 311496059}
+  - {fileID: 344385614}
+  rotateValues:
+  - -60
+  - 510
+  rotationTime: 5
+  boxScript: {fileID: 0}
+  isAddToInventory: 1
 --- !u!4 &8832091400773947212
 Transform:
   m_ObjectHideFlags: 0

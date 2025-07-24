@@ -67,6 +67,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\MergeItem.cs" />
     <Compile Include="Assets\Scripts\KeyPickUp.cs" />
+    <Compile Include="Assets\Scripts\FlourBehaviour.cs" />
     <Compile Include="Assets\Scripts\weponswitch.cs" />
     <Compile Include="Assets\Scripts\lg.cs" />
     <Compile Include="Assets\Scripts\door.cs" />
