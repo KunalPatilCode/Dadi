@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-public class KeyPickUpRaycast : MonoBehaviour
+public class AnimatedPickUpRaycast : MonoBehaviour
 {
     public GameObject keyOB;
     public GameObject pickUpText;

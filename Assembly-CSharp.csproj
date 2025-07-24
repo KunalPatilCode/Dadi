@@ -73,6 +73,7 @@
     <Compile Include="Assets\Scripts\ParentPosition.cs" />
     <Compile Include="Assets\setTrue.cs" />
     <Compile Include="Assets\Scripts\LightFlicker.cs" />
+    <Compile Include="Assets\Scripts\AnimatedPickUp.cs" />
     <Compile Include="Assets\Scripts\DisplayInventory.cs" />
     <Compile Include="Assets\Scripts\MergeZone.cs" />
     <Compile Include="Assets\Scripts\IInteractable.cs" />
