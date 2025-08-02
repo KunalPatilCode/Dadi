@@ -3,13 +3,14 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    public int inventorySize = 5; // Number of inventory slots
+    public int inventorySize = 5;
     [HideInInspector]
     public List<InventorySlot> inventorySlots;
     public Sprite defaultItemIcon;
 
     private DisplayInventory displayInventory;
 
+    [System.Serializable]
     public class InventorySlot
     {
         public InventoryItem item;
@@ -22,12 +23,12 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    // Base class for all inventory items
+    [System.Serializable]
     public class InventoryItem
     {
         public string itemName;
         public Sprite itemIcon;
-        public int stackSize = 1; // How many of this item can be in one slot
+        public int stackSize = 1;
 
         public InventoryItem(string itemName, Sprite itemIcon, int stackSize)
         {
@@ -36,7 +37,6 @@ public class Inventory : MonoBehaviour
             this.stackSize = stackSize;
         }
 
-        // Override this method for specific item actions (e.g., using an item)
         public virtual void Use()
         {
         }
@@ -49,9 +49,7 @@ public class Inventory : MonoBehaviour
 
     private void Start()
     {
-        //InitializeInventorySlots();
         displayInventory = GetComponent<DisplayInventory>();
-        //displayInventory.UpdateInventoryDisplay();
     }
 
     private void InitializeInventorySlots()
@@ -61,29 +59,21 @@ public class Inventory : MonoBehaviour
 
     public bool AddItem(InventoryItem itemToAdd)
     {
-        bool wasInventoryEmpty = false;
-        if(IsInventoryEmpty())
-        {
-            wasInventoryEmpty = true;
-        }
-        
-        // Try to stack with existing items first
+        bool wasInventoryEmpty = IsInventoryEmpty();
+
         for (int i = 0; i < inventorySlots.Count; i++)
         {
             if (inventorySlots[i] != null && inventorySlots[i].item != null && inventorySlots[i].item.itemName == itemToAdd.itemName && inventorySlots[i].currentStack < inventorySlots[i].item.stackSize)
             {
-                /*int canStack = itemToAdd.stackSize; // We are adding one at a time here
-                int needed = inventorySlots[i].item.stackSize - inventorySlots[i].currentStack;
-
-                int toStack = Mathf.Min(canStack, needed);
-                inventorySlots[i].currentStack += toStack;*/
                 inventorySlots[i].currentStack++;
-                displayInventory.UpdateInventoryDisplay();
-                return true; // Assuming we are adding one at a time for simplicity
+                if (displayInventory != null)
+                {
+                    displayInventory.UpdateInventoryDisplay();
+                }
+                return true;
             }
         }
 
-        // If no stackable slot is found, try to add to an empty slot
         for (int i = 0; i < inventorySlots.Count; i++)
         {
             if (inventorySlots[i] == null || inventorySlots[i].item == null)
@@ -93,11 +83,14 @@ public class Inventory : MonoBehaviour
                     itemToAdd.itemIcon = defaultItemIcon;
                 }
                 inventorySlots[i] = new InventorySlot(itemToAdd, 1);
-                displayInventory.UpdateInventoryDisplay();
-                if(wasInventoryEmpty)
+                if (displayInventory != null)
                 {
-                    displayInventory.SelectedIndex = 0;
-                    displayInventory.Select();
+                    displayInventory.UpdateInventoryDisplay();
+                    if(wasInventoryEmpty)
+                    {
+                        displayInventory.SelectedIndex = 0;
+                        displayInventory.Select();
+                    }
                 }
                 return true;
             }
@@ -109,7 +102,10 @@ public class Inventory : MonoBehaviour
 
     public bool RemoveItem(string itemName)
     {
-        displayInventory.Unselect();
+        if (displayInventory != null)
+        {
+            displayInventory.Unselect();
+        }
         for (int i = 0; i < inventorySlots.Count; i++)
         {
             if (inventorySlots[i] != null && inventorySlots[i].item != null && inventorySlots[i].item.itemName == itemName && inventorySlots[i].currentStack > 0)
@@ -117,50 +113,24 @@ public class Inventory : MonoBehaviour
                 inventorySlots[i].currentStack--;
                 if (inventorySlots[i].currentStack <= 0)
                 {
-                    inventorySlots[i] = null; // Remove the empty slot
-                    displayInventory.SelectedIndex = i;
+                    inventorySlots[i] = null;
+                    if (displayInventory != null)
+                    {
+                        displayInventory.SelectedIndex = i;
+                    }
                 }
-                displayInventory.UpdateInventoryDisplay();
-                if(IsInventoryEmpty())
-                    displayInventory.SelectedIndex = -1;
-                Debug.Log(displayInventory.SelectedIndex);
+                if (displayInventory != null)
+                {
+                    displayInventory.UpdateInventoryDisplay();
+                    if(IsInventoryEmpty())
+                        displayInventory.SelectedIndex = -1;
+                }
                 return true;
             }
         }
         Debug.Log(itemName + " not found in inventory.");
         return false;
     }
-
-    /*public bool RemoveItem(string itemName, int amount)
-    {
-        displayInventory.Unselect();
-        int removedCount = 0;
-        for (int i = 0; i < inventorySlots.Count; i++)
-        {
-            if (inventorySlots[i] != null && inventorySlots[i].item != null && inventorySlots[i].item.itemName == itemName && inventorySlots[i].currentStack > 0)
-            {
-                int canRemove = Mathf.Min(amount - removedCount, inventorySlots[i].currentStack);
-                inventorySlots[i].currentStack -= canRemove;
-                removedCount += canRemove;
-
-                if (inventorySlots[i].currentStack <= 0)
-                {
-                    inventorySlots[i] = null; // Remove the empty slot
-                }
-
-                displayInventory.UpdateInventoryDisplay();
-                if(IsInventoryEmpty())
-                    displayInventory.SelectedIndex = -1;
-
-                if (removedCount >= amount)
-                {
-                    return true;
-                }
-            }
-        }
-        Debug.Log(amount + " of " + itemName + " not found in inventory.");
-        return false;
-    }*/
 
     public bool HasItem(string itemName)
     {
@@ -211,10 +181,10 @@ public class Inventory : MonoBehaviour
         {
             if (slot != null && slot.item != null && slot.currentStack > 0)
             {
-                return false; // Found at least one item, so the inventory is not empty
+                return false;
             }
         }
-        return true; // No items found in any slot, so the inventory is empty
+        return true;
     }
 
     public List<InventorySlot> GetInventory()
