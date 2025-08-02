@@ -9431,6 +9431,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationSpeed: -60
   rotationAxis: {x: -0.135, y: 0, z: 0.85}
+  useRelativeAxis: 0
   rotateAboutCenter: 0
 --- !u!1 &330187968 stripped
 GameObject:
@@ -9642,6 +9643,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationSpeed: 510
   rotationAxis: {x: 0, y: 1, z: 0}
+  useRelativeAxis: 0
   rotateAboutCenter: 1
 --- !u!4 &349458023 stripped
 Transform:
@@ -16774,6 +16776,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationSpeed: 45
   rotationAxis: {x: 0, y: 1, z: 0}
+  useRelativeAxis: 0
   rotateAboutCenter: 0
 --- !u!1 &715778480 stripped
 GameObject:
@@ -29561,7 +29564,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 592173025d21626489427cd1a15e9b59, type: 2}
     - target: {fileID: 919132149155446097, guid: 889be93612804c64f8e3e33cd2c50688, type: 3}
       propertyPath: m_Name
-      value: Untitled
+      value: FlourPileBoard
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 889be93612804c64f8e3e33cd2c50688, type: 3}
       propertyPath: m_IsActive
@@ -35237,7 +35240,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 482110134fd07c24581a001a07bdc70c, type: 2}
     - target: {fileID: 919132149155446097, guid: 629d14e20316e83409a5b51a0136f4e3, type: 3}
       propertyPath: m_Name
-      value: FlourPileWithBoard_LOD0
+      value: FlourPileWithBoard
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 629d14e20316e83409a5b51a0136f4e3, type: 3}
       propertyPath: m_IsActive
@@ -47593,8 +47596,10 @@ MonoBehaviour:
   playerCamera: {fileID: 1752944017}
   rotateObjects:
   - {fileID: 715218714}
+  - {fileID: 8209103611340658332}
   rotateValues:
   - 45
+  - 50
   rotationTime: 8
   boxScript: {fileID: 0}
   isAddToInventory: 0
@@ -50049,6 +50054,7 @@ GameObject:
   - component: {fileID: 7495113020411647203}
   - component: {fileID: 1105013368690664381}
   - component: {fileID: 3765108853999774819}
+  - component: {fileID: 8209103611340658333}
   m_Layer: 0
   m_Name: Cylinder002
   m_TagString: Untagged
@@ -50056,6 +50062,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &8209103611340658333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8209103611340658332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5772d32f895d0b745af07053828e923f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationSpeed: 20
+  rotationAxis: {x: 0, y: 0, z: -1}
+  useRelativeAxis: 1
+  rotateAboutCenter: 0
 --- !u!4 &8464433183011778291
 Transform:
   m_ObjectHideFlags: 0

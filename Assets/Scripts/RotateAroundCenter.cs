@@ -2,8 +2,16 @@ using UnityEngine;
 
 public class RotateAroundCenter : MonoBehaviour
 {
+    [Header("Rotation Settings")]
     public float rotationSpeed = 30f;
+
+    [Tooltip("The axis of rotation. Interpreted as a world-space or local-space vector based on the 'Use Relative Axis' setting.")]
     public Vector3 rotationAxis = Vector3.up;
+
+    [Tooltip("If checked, the 'Rotation Axis' will be treated as relative to the object's local orientation.")]
+    public bool useRelativeAxis = false;
+
+    [Tooltip("If checked, the object will orbit around its calculated center. If unchecked, it will only rotate on its own axis.")]
     public bool rotateAboutCenter = true;
 
     private Vector3 center;
@@ -13,31 +21,47 @@ public class RotateAroundCenter : MonoBehaviour
     void Start()
     {
         if (rotateAboutCenter)
+        {
             CalculateCenter();
+        }
+        else
+        {
+            // If not rotating around a center, the center is the object's own pivot.
+            center = transform.position;
+        }
     }
 
     void Update()
     {
-        // Recalculate center in Update if the object's visual bounds might change dynamically
-        // CalculateCenter();
+        // Determine the effective rotation axis in world space for this frame.
+        // If useRelativeAxis is true, transform the local axis to a world direction.
+        // Otherwise, use the world-space axis directly.
+        Vector3 effectiveAxis = useRelativeAxis ? transform.TransformDirection(rotationAxis.normalized) : rotationAxis.normalized;
 
-        // Calculate the direction from the center to the object's current position
-        Vector3 offset = transform.position - center;
-
-        // Rotate this offset vector around the specified axis
-        offset = Quaternion.AngleAxis(rotationSpeed * Time.deltaTime, rotationAxis) * offset;
-
-        // Update the object's position to be the rotated offset from the center
+        // --- Orbit Calculation (if enabled) ---
         if (rotateAboutCenter)
-            transform.position = center + offset;
+        {
+            // Calculate the vector from the center point to the object's current position.
+            Vector3 offset = transform.position - center;
 
-        // Rotate the object itself to maintain its orientation (optional, depends on desired effect)
-        transform.Rotate(rotationAxis * rotationSpeed * Time.deltaTime, Space.World);
+            // Rotate this offset vector around our effective axis.
+            offset = Quaternion.AngleAxis(rotationSpeed * Time.deltaTime, effectiveAxis) * offset;
+
+            // Apply the rotated offset back to the center to get the new position.
+            transform.position = center + offset;
+        }
+
+        // --- Self-Rotation ---
+        // Rotate the object itself around the same effective axis in world space.
+        // This keeps the object's orientation consistent with its orbital motion.
+        transform.Rotate(effectiveAxis, rotationSpeed * Time.deltaTime, Space.World);
     }
 
+    /// <summary>
+    /// Calculates the combined bounding box center of all Renderers in this object and its children.
+    /// </summary>
     void CalculateCenter()
     {
-        bounds = new Bounds(transform.position, Vector3.zero);
         renderers = GetComponentsInChildren<Renderer>();
         if (renderers.Length > 0)
         {
@@ -46,14 +70,23 @@ public class RotateAroundCenter : MonoBehaviour
             {
                 bounds.Encapsulate(renderers[i].bounds);
             }
+            center = bounds.center;
         }
-        center = bounds.center;
+        else
+        {
+            // If no renderers are found, default to the object's transform position.
+            center = transform.position;
+        }
     }
     
+    /// <summary>
+    /// Draws a gizmo in the editor to show the calculated center of rotation.
+    /// </summary>
     private void OnDrawGizmosSelected()
     {
         if (rotateAboutCenter)
         {
+            // Ensure the center is calculated for the gizmo display.
             CalculateCenter();
             Gizmos.color = Color.yellow;
             Gizmos.DrawSphere(center, 0.1f);
