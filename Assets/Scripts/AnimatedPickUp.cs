@@ -4,6 +4,7 @@ public class AnimatedPickUpRaycast : MonoBehaviour
 {
     public GameObject keyOB;
     public GameObject pickUpText;
+    public GameObject requirepickUpText; // New public variable for the required item text
     public GameObject player;
     public AudioSource keySound;
 
@@ -13,24 +14,31 @@ public class AnimatedPickUpRaycast : MonoBehaviour
     public GameObject[] rotateObjects;
     public float[] rotateValues;
     public int rotationTime = 5;
-    public OpenBoxRaycast boxScript; // ← Reference to box script
+    public OpenBoxRaycast boxScript;
     public bool isAddToInventory = true;
+    
+    public string requiredItemName = "Wheat"; // The name of the item required for this interaction.
 
     private InventoryItem inventoryItem;
-
     private bool isPicked = false;
     private bool wasHit = false;
+    private Inventory playerInventory; // Reference to the player's inventory
 
     void Start()
     {
         pickUpText.SetActive(false);
+        if (requirepickUpText != null)
+        {
+            requirepickUpText.SetActive(false);
+        }
         inventoryItem = GetComponent<InventoryItem>();
+        playerInventory = player.GetComponent<Inventory>();
         stopRotation();
     }
 
     void Update()
     {
-        if (isPicked || (boxScript != null && !boxScript.isBoxOpen)) return; // ← Block pickup until box is open
+        if (isPicked || (boxScript != null && !boxScript.isBoxOpen)) return;
 
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
         RaycastHit hit;
@@ -40,18 +48,37 @@ public class AnimatedPickUpRaycast : MonoBehaviour
             if (hit.collider.gameObject == this.gameObject)
             {
                 wasHit = true;
-                pickUpText.SetActive(true);
-
-                if (Input.GetKeyDown(KeyCode.E))
+                
+                // Core Logic: Check if the player has the required item
+                if (playerInventory.HasItem(requiredItemName))
                 {
-                    keySound.Play();
+                    // Player has the required item, show the normal pickup text
+                    pickUpText.SetActive(true);
+                    if (requirepickUpText != null)
+                    {
+                        requirepickUpText.SetActive(false);
+                    }
+                    
+                    if (Input.GetKeyDown(KeyCode.E))
+                    {
+                        keySound.Play();
+                        pickUpText.SetActive(false);
+                        startRotation();
+                        DisableSelf();
+                        Invoke("stopRotation", rotationTime);
+                        if(isAddToInventory)
+                            Invoke("addToInventory", rotationTime);
+                        Invoke("EnableSelf", rotationTime);
+                    }
+                }
+                else
+                {
+                    // Player does not have the required item, show the prerequisite text
                     pickUpText.SetActive(false);
-                    startRotation();
-                    DisableSelf();
-                    Invoke("stopRotation", rotationTime);
-                    if(isAddToInventory)
-                        Invoke("addToInventory", rotationTime);
-                    Invoke("EnableSelf", rotationTime);
+                    if (requirepickUpText != null)
+                    {
+                        requirepickUpText.SetActive(true);
+                    }
                 }
             }
         }
@@ -59,7 +86,12 @@ public class AnimatedPickUpRaycast : MonoBehaviour
         {
             if (wasHit)
             {
+                // Deactivate both texts when not looking at the object
                 pickUpText.SetActive(false);
+                if (requirepickUpText != null)
+                {
+                    requirepickUpText.SetActive(false);
+                }
                 wasHit = false;
             }
         }
@@ -74,7 +106,10 @@ public class AnimatedPickUpRaycast : MonoBehaviour
     {
         for (int i = 0; i < rotateObjects.Length; i++)
         {
-            rotateObjects[i].GetComponent<RotateAroundCenter>().rotationSpeed = 0f;
+            if (rotateObjects[i] != null && rotateObjects[i].GetComponent<RotateAroundCenter>() != null)
+            {
+                rotateObjects[i].GetComponent<RotateAroundCenter>().rotationSpeed = 0f;
+            }
         }
     }
 
@@ -82,7 +117,10 @@ public class AnimatedPickUpRaycast : MonoBehaviour
     {
         for (int i = 0; i < rotateObjects.Length; i++)
         {
-            rotateObjects[i].GetComponent<RotateAroundCenter>().rotationSpeed = rotateValues[i];
+            if (rotateObjects[i] != null && rotateObjects[i].GetComponent<RotateAroundCenter>() != null)
+            {
+                rotateObjects[i].GetComponent<RotateAroundCenter>().rotationSpeed = rotateValues[i];
+            }
         }
     }
 
@@ -90,13 +128,19 @@ public class AnimatedPickUpRaycast : MonoBehaviour
     {
         keyOB.SetActive(false);
         isPicked = true;
-        player.GetComponent<PlayerMovement>().animating = true;
+        if (player != null && player.GetComponent<PlayerMovement>() != null)
+        {
+            player.GetComponent<PlayerMovement>().animating = true;
+        }
     }
     
     void EnableSelf()
     {
         keyOB.SetActive(true);
         isPicked = false;
-        player.GetComponent<PlayerMovement>().animating = false;
+        if (player != null && player.GetComponent<PlayerMovement>() != null)
+        {
+            player.GetComponent<PlayerMovement>().animating = false;
+        }
     }
 }
