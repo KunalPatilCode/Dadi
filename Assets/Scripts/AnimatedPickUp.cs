@@ -2,9 +2,10 @@ using UnityEngine;
 
 public class AnimatedPickUpRaycast : MonoBehaviour
 {
+    // ... (Your existing public variables) ...
     public GameObject keyOB;
     public GameObject pickUpText;
-    public GameObject requirepickUpText; // New public variable for the required item text
+    public GameObject requirepickUpText;
     public GameObject player;
     public AudioSource keySound;
 
@@ -17,12 +18,15 @@ public class AnimatedPickUpRaycast : MonoBehaviour
     public OpenBoxRaycast boxScript;
     public bool isAddToInventory = true;
     
-    public string requiredItemName = "Wheat"; // The name of the item required for this interaction.
+    public string requiredItemName = "Wheat"; // The name of the item to be removed
+
+    // NEW: The object that will appear during the animation
+    public GameObject animatedObject;
 
     private InventoryItem inventoryItem;
     private bool isPicked = false;
     private bool wasHit = false;
-    private Inventory playerInventory; // Reference to the player's inventory
+    private Inventory playerInventory;
 
     void Start()
     {
@@ -31,6 +35,13 @@ public class AnimatedPickUpRaycast : MonoBehaviour
         {
             requirepickUpText.SetActive(false);
         }
+        
+        // NEW: Ensure the animated object is hidden at the start
+        if (animatedObject != null)
+        {
+            animatedObject.SetActive(false);
+        }
+        
         inventoryItem = GetComponent<InventoryItem>();
         playerInventory = player.GetComponent<Inventory>();
         stopRotation();
@@ -49,10 +60,8 @@ public class AnimatedPickUpRaycast : MonoBehaviour
             {
                 wasHit = true;
                 
-                // Core Logic: Check if the player has the required item
                 if (playerInventory.HasItem(requiredItemName))
                 {
-                    // Player has the required item, show the normal pickup text
                     pickUpText.SetActive(true);
                     if (requirepickUpText != null)
                     {
@@ -65,6 +74,9 @@ public class AnimatedPickUpRaycast : MonoBehaviour
                         pickUpText.SetActive(false);
                         startRotation();
                         DisableSelf();
+                        
+                        RemoveRequiredItem(); 
+
                         Invoke("stopRotation", rotationTime);
                         if(isAddToInventory)
                             Invoke("addToInventory", rotationTime);
@@ -73,7 +85,6 @@ public class AnimatedPickUpRaycast : MonoBehaviour
                 }
                 else
                 {
-                    // Player does not have the required item, show the prerequisite text
                     pickUpText.SetActive(false);
                     if (requirepickUpText != null)
                     {
@@ -86,7 +97,6 @@ public class AnimatedPickUpRaycast : MonoBehaviour
         {
             if (wasHit)
             {
-                // Deactivate both texts when not looking at the object
                 pickUpText.SetActive(false);
                 if (requirepickUpText != null)
                 {
@@ -94,6 +104,14 @@ public class AnimatedPickUpRaycast : MonoBehaviour
                 }
                 wasHit = false;
             }
+        }
+    }
+
+    void RemoveRequiredItem()
+    {
+        if (playerInventory.HasItem(requiredItemName))
+        {
+            playerInventory.RemoveItem(requiredItemName);
         }
     }
 
@@ -111,10 +129,22 @@ public class AnimatedPickUpRaycast : MonoBehaviour
                 rotateObjects[i].GetComponent<RotateAroundCenter>().rotationSpeed = 0f;
             }
         }
+        
+        // NEW: Hide the animated object once the animation is done
+        if (animatedObject != null)
+        {
+            animatedObject.SetActive(false);
+        }
     }
 
     void startRotation()
     {
+        // NEW: Show the animated object when the animation starts
+        if (animatedObject != null)
+        {
+            animatedObject.SetActive(true);
+        }
+        
         for (int i = 0; i < rotateObjects.Length; i++)
         {
             if (rotateObjects[i] != null && rotateObjects[i].GetComponent<RotateAroundCenter>() != null)
