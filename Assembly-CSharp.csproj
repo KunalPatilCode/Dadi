@@ -75,12 +75,12 @@
     <Compile Include="Assets\Scripts\lg.cs" />
     <Compile Include="Assets\Scripts\door.cs" />
     <Compile Include="Assets\Scripts\ParentPosition.cs" />
-    <Compile Include="Assets\Scripts\SplineConnector.cs" />
     <Compile Include="Assets\setTrue.cs" />
     <Compile Include="Assets\Scripts\LightFlicker.cs" />
     <Compile Include="Assets\Scripts\AnimatedPickUp.cs" />
     <Compile Include="Assets\Scripts\DisplayInventory.cs" />
     <Compile Include="Assets\Scripts\MergeZone.cs" />
+    <Compile Include="Assets\Scripts\KOKOpenBoxRaycast.cs" />
     <Compile Include="Assets\Scripts\IInteractable.cs" />
     <Compile Include="Assets\Scripts\SplineFollower.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
